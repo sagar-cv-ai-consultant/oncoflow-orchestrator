@@ -1,0 +1,29 @@
+{
+  "name": "oncoflow-orchestrator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "tsc --noEmit -p frontend/tsconfig.json && vite build --config frontend/vite.config.ts",
+    "test": "node scripts/python.mjs -m pytest -q",
+    "lint": "node scripts/python.mjs -m ruff check backend && tsc --noEmit -p frontend/tsconfig.json",
+    "format": "node scripts/python.mjs -m ruff format backend && prettier --write frontend scripts package.json .prettierrc.json",
+    "format:check": "node scripts/python.mjs -m ruff format --check backend && prettier --check frontend scripts package.json .prettierrc.json",
+    "check": "npm run lint && npm run format:check && npm test && npm run build"
+  },
+  "dependencies": {
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.2",
+    "@types/react-dom": "19.1.2",
+    "typescript": "5.8.3",
+    "vite": "6.3.5",
+    "prettier": "3.5.3"
+  }
+}

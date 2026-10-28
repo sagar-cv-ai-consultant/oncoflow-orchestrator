@@ -1,0 +1,29 @@
+# Local environments and dependencies
+.venv/
+node_modules/
+
+# Build and tooling output
+dist/
+coverage/
+htmlcov/
+.coverage
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.py[cod]
+*.egg-info/
+*.tsbuildinfo
+*.log
+
+# Local runtime data and secrets
+data/
+*.sqlite3
+*.sqlite3-*
+.env
+.env.*
+!.env.example
+
+# OS and editor files
+.DS_Store
+.idea/
+.vscode/
