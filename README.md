@@ -1,8 +1,8 @@
 # OncoFlow Orchestrator
 
 Team_vaidya's oncology clinic-operations prototype for Health-a-thon 2026.
-The tagged **v1.0.0** is the manual workflow milestone. The current working
-tree adds an **advisory automated chair scheduler** and a ghost-slot recovery
+The tagged **v1.0.0** is the manual workflow milestone. Later commits add an
+**advisory automated chair scheduler** and a ghost-slot recovery
 demo. It detects overdue unusable bookings, assigns feasible waiting patients
 across those chairs with Google OR-Tools CP-SAT,
 and rechecks the plan when staff confirm a replacement. AI assistance, live
@@ -10,6 +10,38 @@ HIS/LIS integration, and patient messaging are not implemented.
 
 Only fictional patient data belongs in this prototype. It is not a clinical
 decision system or a production deployment.
+
+## Evaluator quick start
+
+This is a local prototype. The GitHub link and these instructions do not
+provide a hosted MVP URL; run it on your own computer to explore the demo.
+
+1. Install Python 3.10+ and Node.js 20.19+ (or Node.js 22.12+).
+2. Open a terminal in the cloned repository and install dependencies:
+
+   ```sh
+   python3 -m venv .venv
+   .venv/bin/python -m pip install -r requirements-dev.txt
+   npm ci
+   ```
+
+3. Start the ghost-chair scenario with a new database filename:
+
+   ```sh
+   ONCOFLOW_SCENARIO=ghost ONCOFLOW_DB=data/ghost-judge-01.sqlite3 npm run dev
+   ```
+
+4. Open <http://127.0.0.1:5173/>. No login is required for this local demo.
+   At the fictional clinic time of 10:30, open **Ghost chair recovery**,
+   inspect **Why other visits were excluded**, then review the proposed
+   replacement for Chair 2. Click **Confirm displacement and start** to see
+   the updated chair, displaced-booking follow-up, and **Audit history**.
+
+For a fresh replay, stop the app with **Ctrl+C** and start it with a different
+database filename, such as `data/ghost-judge-02.sqlite3`. See the
+[four-minute walkthrough](docs/GHOST_SCHEDULER_DEMO.md) for the reasoning and
+limitations. If ports 5173 or 8000 are already in use, stop the other local
+OncoFlow process before restarting.
 
 ## Requirements
 
@@ -24,7 +56,7 @@ No Docker, Redis, PostgreSQL, messaging credentials, or AI API key is needed.
 Run commands from the cloned repository root:
 
 ```sh
-cd /Users/sagardeyagond/sagar_dir/hackathon/koita/oncoflow-orchestrator
+cd oncoflow-orchestrator
 python3 --version
 ```
 
@@ -201,7 +233,7 @@ For an exception scenario, change a report to **Corrected** during infusion.
 The UI requests staff review without automatically interrupting ongoing care.
 See the [demo guide](docs/DEMO_GUIDE.md) for the narrative and scope caveats.
 
-## Automated scheduling in the current working tree
+## Automated scheduling
 
 The dashboard's **Suggested chair plan** is calculated by `ChairScheduler` on
 every state read. A visit enters the plan only when required reports are final,
