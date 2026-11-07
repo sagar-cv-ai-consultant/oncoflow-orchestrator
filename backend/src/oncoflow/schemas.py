@@ -50,3 +50,45 @@ class CommandResult(BaseModel):
     """Indicate whether an identical event was already processed."""
 
     duplicate: bool
+
+
+class GhostApproval(BaseModel):
+    """Coordinator confirmation tied to a specific clinic revision."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    event_id: str = Field(min_length=1, max_length=100)
+    expected_revision: int = Field(ge=0)
+    booked_patient_id: str = Field(min_length=1)
+    replacement_id: str = Field(min_length=1)
+    chair: int = Field(ge=1, le=6)
+
+
+class DemoClockUpdate(BaseModel):
+    """Advance the synthetic clinic clock for a replayable demo."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    minute: int = Field(ge=0, le=480)
+    expected_revision: int = Field(ge=0)
+
+
+class DemoOnboardRequest(BaseModel):
+    """Add a fixed synthetic visit with a completed report status."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    event_id: str = Field(min_length=1, max_length=100)
+    expected_revision: int = Field(ge=0)
+
+
+class ReportWebhook(BaseModel):
+    """Synthetic source event; report content is discarded at the adapter."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    event_id: str = Field(min_length=1, max_length=100)
+    patient_id: str = Field(min_length=1)
+    panel: Literal["CBC", "CMP"]
+    source_sequence: int = Field(ge=1)
+    report: dict

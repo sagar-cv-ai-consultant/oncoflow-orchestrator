@@ -34,9 +34,9 @@ export function Sidebar({ view, onViewChange }: Props) {
         </button>
       </nav>
       <div className="sidebar-bottom">
-        <span className="tiny">BUILD MILESTONE 01</span>
-        <p>Visibility & readiness</p>
-        <small>Scheduling and AI assistance are planned for later milestones.</small>
+        <span className="tiny">CURRENT MVP</span>
+        <p>Readiness & chair recovery</p>
+        <small>Staff review each scheduling recommendation before a chair changes.</small>
       </div>
     </aside>
   );

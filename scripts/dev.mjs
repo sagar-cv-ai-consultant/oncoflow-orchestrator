@@ -13,10 +13,11 @@ function stop(code = 0) {
   process.exitCode = code;
 }
 
-function launch(executable, arguments_) {
+function launch(executable, arguments_, env = process.env) {
   const child = spawn(executable, arguments_, {
     cwd: projectRoot,
     stdio: 'inherit',
+    env,
   });
   children.push(child);
   child.on('error', (error) => {
@@ -33,18 +34,22 @@ try {
   for (const signal of ['SIGINT', 'SIGTERM']) {
     process.on(signal, () => stop());
   }
-  launch(python, [
-    '-m',
-    'uvicorn',
-    'oncoflow.api:create_app',
-    '--factory',
-    '--app-dir',
-    'backend/src',
-    '--host',
-    '127.0.0.1',
-    '--port',
-    '8000',
-  ]);
+  launch(
+    python,
+    [
+      '-m',
+      'uvicorn',
+      'oncoflow.api:create_app',
+      '--factory',
+      '--app-dir',
+      'backend/src',
+      '--host',
+      '127.0.0.1',
+      '--port',
+      '8000',
+    ],
+    { ...process.env, ONCOFLOW_LOCAL_DEMO: '1' },
+  );
   launch(process.execPath, [vite, '--config', 'frontend/vite.config.ts']);
 } catch (error) {
   console.error(error.message);

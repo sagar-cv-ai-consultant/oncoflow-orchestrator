@@ -1,0 +1,53 @@
+{
+  "fixed_case": {
+    "scenario": "two overdue booked chairs, two ready replacements",
+    "data": "fictional, deterministic",
+    "comparison": "hold booking until ready vs confirmed backfill",
+    "assumptions": {
+      "clock_minute": 150,
+      "original_ready_minutes": {
+        "OF-003": 210,
+        "OF-004": 230
+      },
+      "chair_turnover_minutes": 10
+    },
+    "per_chair": [
+      {
+        "chair": 2,
+        "delayed_booking": "OF-003",
+        "replacement": "OF-007",
+        "baseline_idle_minutes_until_original_ready": 60,
+        "recovered_chair_minutes": 60,
+        "possible_same_chair_delay_minutes": 10
+      },
+      {
+        "chair": 3,
+        "delayed_booking": "OF-004",
+        "replacement": "OF-011",
+        "baseline_idle_minutes_until_original_ready": 80,
+        "recovered_chair_minutes": 60,
+        "possible_same_chair_delay_minutes": 0
+      }
+    ],
+    "totals": {
+      "baseline_idle_minutes": 140,
+      "recovered_chair_minutes": 120,
+      "possible_same_chair_delay_minutes": 10
+    },
+    "limitation": "One scripted case only; not measured patient or clinic benefit. The displaced patient still needs a new booking."
+  },
+  "varied_days": {
+    "scenario_count": 50,
+    "data": "varied synthetic states, seeds 0 through count-1",
+    "comparison": "holding two blocked bookings vs immediate backfill",
+    "summary": {
+      "mean_fills_per_day": 1.82,
+      "median_recovered_chair_minutes": 101.0,
+      "p90_recovered_chair_minutes": 149,
+      "median_possible_same_chair_delay_minutes": 42.0,
+      "p90_possible_same_chair_delay_minutes": 90,
+      "p90_solver_ms": 0.872
+    },
+    "limitation": "Synthetic robustness check, not a clinical-effectiveness study. Original patients still require rebooking."
+  }
+}

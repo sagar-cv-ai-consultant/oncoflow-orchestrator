@@ -288,6 +288,212 @@ header p {
   color: #7b877d;
   margin: 9px 0 0;
 }
+.schedule {
+  background: #fff;
+  border: 1px solid #dfe5db;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+}
+.ghost-panel {
+  background: #fff;
+  border: 1px solid #d8e2d8;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+}
+.ghost-panel .section-heading h2 {
+  margin-top: 4px;
+}
+.ghost-intro {
+  margin: 0 20px 12px;
+  font-size: 11px;
+}
+.demo-clock {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #687769;
+  font-size: 10px;
+}
+.demo-clock strong {
+  color: #255f4d;
+  font-size: 14px;
+}
+.demo-clock button {
+  border: 1px solid #cbdccc;
+  background: #f4f8f2;
+  border-radius: 4px;
+  color: #35634f;
+  padding: 6px;
+}
+.ghost-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+  gap: 12px;
+  margin: 0 20px;
+}
+.ghost-card {
+  background: #f8fbf7;
+  border: 1px solid #dce8dc;
+  border-radius: 7px;
+  padding: 13px;
+  font-size: 10px;
+  line-height: 1.5;
+}
+.ghost-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.ghost-card-top strong {
+  color: #245e4c;
+}
+.ghost-card-top span {
+  color: #708071;
+}
+.solver-label {
+  display: block;
+  color: #42775b;
+  margin-top: 5px;
+}
+.ghost-card p {
+  color: #566858;
+}
+.ghost-choice {
+  border-left: 3px solid #4d9475;
+  padding: 7px 9px;
+  background: #edf6ef;
+}
+.ghost-choice span,
+.ghost-choice strong,
+.ghost-choice small {
+  display: block;
+}
+.ghost-choice strong {
+  font-size: 13px;
+  color: #205741;
+}
+.ghost-choice small {
+  color: #59715e;
+}
+.ghost-choice .displacement-warning {
+  color: #825a24;
+  margin-top: 7px;
+  font-weight: 600;
+}
+.ghost-card details {
+  margin-top: 12px;
+  color: #5f735f;
+}
+.ghost-card summary {
+  cursor: pointer;
+}
+.ghost-card li {
+  margin-top: 4px;
+}
+.displaced-queue {
+  margin: 15px 20px 0;
+  padding-top: 12px;
+  border-top: 1px solid #e2e9df;
+}
+.displaced-queue h3 {
+  font-size: 12px;
+  margin: 0 0 8px;
+}
+.displaced-queue button {
+  border: 1px solid #e1e8dd;
+  background: #fff;
+  border-radius: 5px;
+  padding: 9px 12px;
+  margin: 0 8px 8px 0;
+  text-align: left;
+}
+.displaced-queue button strong,
+.displaced-queue button span {
+  display: block;
+  font-size: 10px;
+}
+.displaced-queue button span {
+  color: #6d796b;
+}
+.displaced-item {
+  display: inline-block;
+  vertical-align: top;
+  border: 1px solid #e1e8dd;
+  border-radius: 5px;
+  margin: 0 8px 8px 0;
+  padding: 8px;
+}
+.displaced-item button {
+  margin: 0;
+}
+.displaced-item small {
+  display: block;
+  color: #527057;
+  padding: 4px 10px;
+}
+@media (max-width: 640px) {
+  .ghost-panel .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+.schedule .section-heading {
+  padding-bottom: 8px;
+}
+.schedule .section-heading h2 {
+  margin-top: 3px;
+}
+.schedule-label {
+  color: #346b57;
+  background: #e5f0e9;
+  border-radius: 4px;
+  padding: 6px 8px;
+  font-size: 10px;
+}
+.schedule > .subtle,
+.schedule-footnote {
+  margin: 0 20px 10px;
+  color: #758173;
+  font-size: 10px;
+  line-height: 1.5;
+}
+.schedule-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+  gap: 8px;
+  margin: 12px 20px;
+}
+.schedule-item {
+  border: 1px solid #dfe8dd;
+  background: #f8faf6;
+  border-radius: 6px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.schedule-item strong,
+.schedule-item small {
+  display: block;
+  font-size: 10px;
+}
+.schedule-item small {
+  color: #6f7d70;
+  margin-top: 4px;
+}
+.schedule-item .secondary {
+  width: auto;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 7px 9px;
+}
+.schedule-footnote {
+  margin-top: 10px;
+  margin-bottom: 0;
+}
 .chairs {
   display: flex;
   align-items: center;

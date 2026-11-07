@@ -12,7 +12,14 @@ from fastapi.responses import JSONResponse
 from .config import Settings
 from .exceptions import ConflictError, VisitNotFoundError, WorkflowError
 from .repository import SQLiteVisitRepository
-from .schemas import Command, CommandResult
+from .schemas import (
+    Command,
+    CommandResult,
+    DemoClockUpdate,
+    DemoOnboardRequest,
+    GhostApproval,
+    ReportWebhook,
+)
 from .service import ClinicService
 
 
@@ -24,18 +31,28 @@ def get_service(request: Request) -> ClinicService:
 ServiceDependency = Annotated[ClinicService, Depends(get_service)]
 
 
-def create_app(path: str | Path | None = None) -> FastAPI:
+def create_app(
+    path: str | Path | None = None, scenario: str = "manual"
+) -> FastAPI:
     """Build an app with injectable storage for isolated workflow tests."""
     settings = (
-        Settings(database_path=Path(path))
+        Settings(
+            database_path=Path(path),
+            scenario=scenario,
+            demo_routes_enabled=True,
+        )
         if path is not None
         else Settings.from_environment()
     )
 
+    def require_demo_routes() -> None:
+        if not settings.demo_routes_enabled:
+            raise HTTPException(status_code=404, detail="Not found.")
+
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         repository = SQLiteVisitRepository(settings.database_path)
-        repository.initialize()
+        repository.initialize(settings.scenario)
         app.state.clinic_service = ClinicService(repository)
         yield
 
@@ -73,7 +90,9 @@ def create_app(path: str | Path | None = None) -> FastAPI:
             "status": "ok",
             "mode": "synthetic_demo",
             "ai_enabled": False,
-            "scheduler_enabled": False,
+            "scheduler_enabled": True,
+            "scheduler_mode": "advisory_heuristic",
+            "ghost_solver": "cp_sat_with_heuristic_fallback",
         }
 
     @app.get("/api/state")
@@ -91,6 +110,7 @@ def create_app(path: str | Path | None = None) -> FastAPI:
     @app.post(
         "/api/demo/visits/{patient_id}/reports/{panel}",
         response_model=CommandResult,
+        dependencies=[Depends(require_demo_routes)],
     )
     def report(
         patient_id: str,
@@ -108,6 +128,40 @@ def create_app(path: str | Path | None = None) -> FastAPI:
                 expected_version=expected_version,
                 event_id=event_id,
             )
+        except ValueError:
+            raise HTTPException(422, "Invalid report status event.") from None
+
+    @app.post("/api/ghost-slots/approve", response_model=CommandResult)
+    def approve_ghost(
+        body: GhostApproval, service: ServiceDependency
+    ) -> CommandResult:
+        return service.approve_ghost(body)
+
+    @app.post("/api/demo/clock", dependencies=[Depends(require_demo_routes)])
+    def demo_clock(body: DemoClockUpdate, service: ServiceDependency) -> dict:
+        service.advance_clock(body.minute, body.expected_revision)
+        return {"minute": body.minute}
+
+    @app.post(
+        "/api/demo/onboard",
+        response_model=CommandResult,
+        dependencies=[Depends(require_demo_routes)],
+    )
+    def demo_onboard(
+        body: DemoOnboardRequest, service: ServiceDependency
+    ) -> CommandResult:
+        return service.onboard_demo_visit(body)
+
+    @app.post(
+        "/api/demo/webhook/report",
+        response_model=CommandResult,
+        dependencies=[Depends(require_demo_routes)],
+    )
+    def demo_report_webhook(
+        body: ReportWebhook, service: ServiceDependency
+    ) -> CommandResult:
+        try:
+            return service.receive_webhook(body)
         except ValueError:
             raise HTTPException(422, "Invalid report status event.") from None
 

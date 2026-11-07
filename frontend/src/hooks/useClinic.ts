@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { Snapshot, PatientAction } from '../types';
+import type { Snapshot, PatientAction, GhostSlot } from '../types';
 import { clinicApi } from '../services/api';
 /** Own server synchronization and command feedback for the dashboard. */
 export function useClinic() {
@@ -50,9 +50,72 @@ export function useClinic() {
       setBusy(false);
     }
   };
+  async function approveGhost(slot: GhostSlot) {
+    if (!data || pending.current) return;
+    pending.current = true;
+    setBusy(true);
+    setError('');
+    setNotice('');
+    try {
+      await clinicApi.approveGhost(slot, data.revision);
+      setNotice('Ghost slot filled and recorded in the audit history.');
+      await refresh();
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Unable to confirm.');
+      await refresh();
+    } finally {
+      pending.current = false;
+      setBusy(false);
+    }
+  }
+  async function advanceClock(minutes: number) {
+    if (!data || pending.current) return;
+    pending.current = true;
+    setBusy(true);
+    setError('');
+    try {
+      await clinicApi.advanceClock(data.demo_minute + minutes, data.revision);
+      await refresh();
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Clock update failed.');
+      await refresh();
+    } finally {
+      pending.current = false;
+      setBusy(false);
+    }
+  }
+  async function onboardDemo() {
+    if (!data || pending.current) return;
+    pending.current = true;
+    setBusy(true);
+    setError('');
+    try {
+      await clinicApi.onboardDemo(data.revision);
+      setNotice('Synthetic patient added with CBC already final.');
+      await refresh();
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Onboarding failed.');
+      await refresh();
+    } finally {
+      pending.current = false;
+      setBusy(false);
+    }
+  }
   function clearFeedback() {
     setError('');
     setNotice('');
   }
-  return { data, error, offline, busy, notice, updated, command, clearFeedback };
+  return {
+    data,
+    error,
+    offline,
+    busy,
+    notice,
+    updated,
+    command,
+    approveGhost,
+    advanceClock,
+    onboardDemo,
+    clearFeedback,
+  };
 }

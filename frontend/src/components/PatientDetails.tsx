@@ -157,8 +157,8 @@ export function PatientDetails({
             <details className="simulation">
               <summary>Demo event controls</summary>
               <p>
-                Simulate report availability. Corrected reports require staff review and
-                new clearance.
+                Send a synthetic LIS status event. Corrected reports require staff
+                review and new clearance.
               </p>
               {Object.entries(patient.panels).map(([code, status]) => (
                 <label key={code} className="field-label">

@@ -46,7 +46,7 @@ export function ClinicSummary({
           {occupied.length}
           <small>/ {chairCount}</small>
         </strong>
-        <p>Manually assigned in this milestone</p>
+        <p>Actual starts confirmed by staff</p>
       </div>
     </section>
   );

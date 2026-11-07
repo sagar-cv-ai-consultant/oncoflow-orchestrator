@@ -14,6 +14,8 @@ __pycache__/
 *.egg-info/
 *.tsbuildinfo
 *.log
+docs/submission/video_draft/
+docs/submission/video_v2/
 
 # Local runtime data and secrets
 data/

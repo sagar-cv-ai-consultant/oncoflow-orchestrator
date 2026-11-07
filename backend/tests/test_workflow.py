@@ -210,11 +210,13 @@ def test_closed_visits_and_unknown_visits(clinic):
     assert res.status_code == 404
 
 
-def test_demonstration_does_not_claim_ai_or_scheduler(clinic):
+def test_demonstration_reports_advisory_scheduler_without_ai(clinic):
     client, _ = clinic
     assert client.get("/api/health").json() == {
         "status": "ok",
         "mode": "synthetic_demo",
         "ai_enabled": False,
-        "scheduler_enabled": False,
+        "scheduler_enabled": True,
+        "scheduler_mode": "advisory_heuristic",
+        "ghost_solver": "cp_sat_with_heuristic_fallback",
     }

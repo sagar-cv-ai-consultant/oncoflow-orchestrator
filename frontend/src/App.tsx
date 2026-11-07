@@ -7,9 +7,22 @@ import { ChairAvailability } from './components/ChairAvailability';
 import { PatientWorklist } from './components/PatientWorklist';
 import { PatientDetails } from './components/PatientDetails';
 import { AuditHistory } from './components/AuditHistory';
+import { ScheduleRecommendations } from './components/ScheduleRecommendations';
+import { GhostSlots } from './components/GhostSlots';
 export function App() {
-  const { data, error, offline, busy, notice, updated, command, clearFeedback } =
-    useClinic();
+  const {
+    data,
+    error,
+    offline,
+    busy,
+    notice,
+    updated,
+    command,
+    approveGhost,
+    advanceClock,
+    onboardDemo,
+    clearFeedback,
+  } = useClinic();
   const [selected, setSelected] = useState('OF-003');
   const [view, setView] = useState<View>('worklist');
   const [filter, setFilter] = useState<Filter>('all');
@@ -26,6 +39,10 @@ export function App() {
           .querySelector('.patient-detail')
           ?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
       );
+  }
+  function reviewRecommendation(id: string, recommendedChair: number) {
+    setChair(String(recommendedChair));
+    selectPatient(id);
   }
   return (
     <div className="shell">
@@ -91,6 +108,26 @@ export function App() {
               <AuditHistory events={data.events} />
             ) : (
               <>
+                {data.scenario === 'ghost' ? (
+                  <GhostSlots
+                    slots={data.ghost_slots}
+                    patients={patients}
+                    schedule={data.schedule}
+                    minute={data.demo_minute}
+                    busy={busy || offline}
+                    onApprove={approveGhost}
+                    onAdvance={advanceClock}
+                    onSelectPatient={selectPatient}
+                    onReview={reviewRecommendation}
+                    onOnboard={onboardDemo}
+                  />
+                ) : (
+                  <ScheduleRecommendations
+                    schedule={data.schedule}
+                    patients={patients}
+                    onReview={reviewRecommendation}
+                  />
+                )}
                 <ChairAvailability patients={patients} chairCount={data.chair_count} />
                 <div className="work-area">
                   <PatientWorklist

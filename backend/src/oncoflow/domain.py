@@ -1,6 +1,8 @@
 """Visit entities own workflow decisions; no clinical values are modeled."""
 
-from pydantic import BaseModel, ConfigDict
+from typing import Literal
+
+from pydantic import BaseModel, ConfigDict, Field
 
 from .exceptions import WorkflowError
 from .schemas import Command, Location, ReportStatus, Stage
@@ -14,6 +16,13 @@ class PatientVisit(BaseModel):
     id: str
     alias: str
     priority: int
+    scheduled_duration_minutes: int = Field(default=90, ge=30, le=360)
+    appointment_minute: int | None = Field(default=None, ge=0, le=480)
+    booked_start_minute: int | None = Field(default=None, ge=0, le=480)
+    booked_chair: int | None = Field(default=None, ge=1, le=6)
+    booking_status: Literal["none", "active", "displaced"] = "none"
+    ready_since_minute: int | None = Field(default=None, ge=0, le=480)
+    infusion_started_minute: int | None = Field(default=None, ge=0, le=480)
     panels: dict[str, ReportStatus]
     consult_done: bool = False
     in_consult: bool = False
@@ -166,6 +175,7 @@ class PatientVisit(BaseModel):
         self.closed = "discharged"
         self.location = "left"
         self.chair = None
+        self.booking_status = "none"
 
     def _update_location(self, location: Location | None) -> None:
         if (

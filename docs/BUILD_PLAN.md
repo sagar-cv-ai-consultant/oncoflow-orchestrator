@@ -1,4 +1,4 @@
-> Historical sprint plan. Current implemented scope and startup instructions are documented in ../README.md. Scheduler and AI work remain deferred at the user's request.
+> Historical sprint plan. Current implemented scope and startup instructions are documented in ../README.md. The working tree now includes a synthetic ghost-slot scenario, staff-confirmed replacement and status webhook simulator. AI and real integration remain pending.
 
 # OncoFlow Phase II build plan
 

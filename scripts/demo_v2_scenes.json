@@ -1,0 +1,76 @@
+[
+  {
+    "id": "problem",
+    "label": "THE CLINIC MOMENT",
+    "title": "Two chairs may sit idle. Six patients are waiting.",
+    "narration": "At ten thirty, a fictional oncology day-care unit has six patients in its waiting room and four chairs already occupied. Two more chairs were booked, but the booked patients do not yet have recorded prerequisites to start. Who should use the gap, and how do we protect the original booking?",
+    "min_seconds": 28,
+    "rate": "-4%"
+  },
+  {
+    "id": "overview",
+    "label": "LIVE COORDINATOR VIEW",
+    "title": "See the whole clinic day",
+    "narration": "This is OncoFlow's coordinator view. It shows the clinic clock, patient readiness, chair occupancy and two possible ghost slots. A patient waiting does not automatically become eligible. Some are awaiting a report, consultation, clearance, or pharmacy readiness. The system does not read laboratory values. It uses recorded status flags and workflow events.",
+    "source_start": 14,
+    "source_end": 49,
+    "min_seconds": 35,
+    "rate": "+0%"
+  },
+  {
+    "id": "recommend",
+    "label": "THE SCHEDULER'S PROPOSAL",
+    "title": "Who can take each chair?",
+    "narration": "The scheduler recommends demo patient zero seven for chair two, and demo patient eleven for chair three. It checks report status, consultation, clinician clearance, pharmacy readiness, presence on site, planned duration, the next protected booking and nurse setup capacity. Among eligible patients, staff-entered priority leads. Ties use appointment due time, readiness wait, arrival and visit ID. Open the exclusions to see why others were skipped.",
+    "source_start": 72,
+    "source_end": 118,
+    "min_seconds": 46,
+    "rate": "+0%"
+  },
+  {
+    "id": "approval",
+    "label": "HUMAN APPROVAL",
+    "title": "A recommendation becomes an action",
+    "narration": "Chair two is booked for demo patient zero three, who is still blocked. OncoFlow warns that a replacement could create up to seventy minutes of possible same-chair delay if the original patient becomes ready immediately. The coordinator reviews the trade-off and confirms. The server rechecks the latest state before starting demo patient zero seven. Demo patient zero three remains in a visible follow-up queue.",
+    "source_start": 118,
+    "source_end": 153,
+    "min_seconds": 39,
+    "rate": "-3%"
+  },
+  {
+    "id": "audit",
+    "label": "TRACEABLE DECISIONS",
+    "title": "The original booking stays visible",
+    "narration": "The audit history records the ghost-slot decision, the affected visit and the local demo operator. A stale proposal cannot silently start treatment. The server rejects it and asks for a fresh review. The application is a scheduling aid; clinical priority and clearance remain with staff.",
+    "source_start": 153,
+    "source_end": 181,
+    "min_seconds": 30,
+    "rate": "-2%"
+  },
+  {
+    "id": "intake",
+    "label": "WORKFLOW CONTINUITY",
+    "title": "Patients can enter mid-journey",
+    "narration": "A patient can also join mid-journey. Here demo patient thirteen arrives with the CBC report already final, so the next step is consultation. OncoFlow receives the report status, not the result values. The coordinator still controls every subsequent step.",
+    "source_start": 181,
+    "source_end": 205,
+    "min_seconds": 26,
+    "rate": "+0%"
+  },
+  {
+    "id": "evidence",
+    "label": "SYNTHETIC EVALUATION",
+    "title": "Recovered time has a trade-off",
+    "narration": "In one scripted fictional comparison, holding two booked chairs would leave one hundred and forty chair-minutes idle before those patients become ready. Staff-confirmed backfill occupies one hundred and twenty of those minutes, with ten minutes of possible extra same-chair wait. Across fifty varied fictional cases, median recovered time was one hundred and one chair-minutes, while median possible same-chair delay was forty-two. These are synthetic scenario results, not a measured hospital benefit.",
+    "min_seconds": 42,
+    "rate": "-3%"
+  },
+  {
+    "id": "close",
+    "label": "WHAT THE MVP DOES",
+    "title": "A clear next step. Staff make the decision.",
+    "narration": "The immediate chair assignment uses a constraint optimiser, C P SAT. It is not a trained clinical prediction model. The current prototype uses fictional data and a local store; doctor workflow review is pending. Before a pilot, priority policy, nurse capacity, access controls, integration and displaced-patient follow-up need clinical and operational agreement. OncoFlow turns an uncertain gap into a clear recommendation, with a person making the final decision.",
+    "min_seconds": 42,
+    "rate": "-4%"
+  }
+]
